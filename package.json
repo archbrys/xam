@@ -46,7 +46,7 @@
   "devDependencies": {
     "tailwindcss": "^3.3.5"
   },
-  "overrides": {
-    "@types/react": "^18.0.0"
-  }
+  "main": "index.js",
+  "author": "Archie Reyes <archbrys@gmail.com>",
+  "license": "MIT"
 }
