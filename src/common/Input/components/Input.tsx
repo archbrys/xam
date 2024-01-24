@@ -1,4 +1,5 @@
 import React, { memo } from 'react'
+import { DEFAULT_STYLE, ERROR_STYLE } from '../../../modules/Login/constant'
 
 type InputProps = {
   [key: string]: any
@@ -8,6 +9,7 @@ type InputProps = {
   type?: string
   name: string
   required?: boolean
+  error?: any
 }
 
 function Input({
@@ -17,6 +19,7 @@ function Input({
   type,
   name,
   required,
+  error,
   ...rest
 }: InputProps) {
   return (
@@ -30,13 +33,14 @@ function Input({
           type={type}
           name={name}
           id={name}
-          className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-72 p-2.5 "
+          className={error ? ERROR_STYLE : DEFAULT_STYLE}
           required={required}
           onChange={onChange}
           value={value}
           // eslint-disable-next-line react/jsx-props-no-spreading
           {...rest}
         />
+        <p className="mt-2 text-sm text-red-600">{error}</p>
       </label>
     </div>
   )
@@ -46,6 +50,7 @@ Input.defaultProps = {
   label: '',
   type: 'text',
   required: false,
+  error: '',
 }
 
 export default memo(Input)

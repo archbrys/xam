@@ -20,6 +20,7 @@ type ButtonProps = {
   children?: React.ReactNode
   size?: SizeType
   buttonStyle?: ButtonStyleType
+  disabled?: boolean
 }
 
 function Button({
@@ -28,12 +29,14 @@ function Button({
   children,
   size = 'full',
   buttonStyle = 'default',
+  disabled,
 }: ButtonProps) {
   return (
     <button
       type={type}
       className={`${Size[size]} ${ButtonStyle[buttonStyle]}`}
       onClick={onClick}
+      disabled={disabled}
     >
       {children}
     </button>
@@ -45,6 +48,7 @@ Button.defaultProps = {
   onClick: () => {},
   size: 'full',
   buttonStyle: 'default',
+  disabled: false,
 }
 
 export default memo(Button)
