@@ -3,9 +3,3 @@ export interface IFormData {
   userName: string
   password: string
 }
-
-export enum FormProperties {
-  BranchId = 'branchId',
-  UserName = 'userName',
-  Password = 'password',
-}

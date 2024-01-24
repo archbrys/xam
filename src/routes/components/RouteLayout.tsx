@@ -2,6 +2,7 @@ import React from 'react'
 import { Route, Routes } from 'react-router-dom'
 import RequireAuth from './RequiredAuth'
 import Login from '../../modules/Login'
+import User from '../../modules/User'
 
 function RouteLayout() {
   return (
@@ -10,7 +11,7 @@ function RouteLayout() {
         path="/"
         element={
           <RequireAuth>
-            <div>Home Page</div>
+            <User />
           </RequireAuth>
         }
       />

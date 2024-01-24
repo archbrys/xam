@@ -6,12 +6,13 @@ import Button from '../../../common/Button'
 import { selectUsers } from '../../../features/user/userSlice'
 import { useAppSelector } from '../../../store/hooks'
 import { IUser } from '../../User/interface'
-import { FormProperties } from '../interface'
+import { useAuth } from '../../../utils/hooks/useAuth'
+import { UserProperties } from '../../User/constant'
 
 function LandingPage() {
   const navigate = useNavigate()
   const location = useLocation()
-
+  const auth = useAuth()
   const from = location.state?.from?.pathname || '/'
 
   const [formData, setFormData] = useState(INITIAL_FORM_DATA)
@@ -37,8 +38,10 @@ function LandingPage() {
       if (!user) {
         console.log('no user found')
       } else {
-        //  Send them back to the page they tried to visit when they were redirected to the login page.
-        navigate(from, { replace: true })
+        auth.login(user, () => {
+          //  Send them back to the page they tried to visit when they were redirected to the login page.
+          navigate(from, { replace: true })
+        })
       }
     })
   }
@@ -47,16 +50,22 @@ function LandingPage() {
     (event: React.ChangeEvent<HTMLInputElement>) => {
       const { name, value } = event.target
 
-      setFormData((prevFormData) => ({
-        ...prevFormData,
-        [name]: name === FormProperties.BranchId ? +value : value,
-      }))
+      setFormData((prevFormData) => {
+        const newValue =
+          name === UserProperties.BranchId && parseInt(value, 10)
+            ? +value
+            : value
+        return {
+          ...prevFormData,
+          [name]: newValue,
+        }
+      })
     },
     []
   )
 
   return (
-    <div className="flex justify-center items-center h-screen">
+    <main className="flex justify-center items-center h-screen">
       <section className="bg-gray-5">
         <div className="flex flex-col items-center justify-center px-6 py-8 mx-auto md:h-screen lg:py-0">
           <div className="w-full bg-white rounded-lg shadow md:mt-0 md:max-w-md xl:p-0">
@@ -69,19 +78,19 @@ function LandingPage() {
                 onSubmit={handleOnSubmit}
               >
                 <Input
-                  name={FormProperties.BranchId}
+                  name={UserProperties.BranchId}
                   label="Branch Id"
                   onChange={handleOnChange}
                   value={formData.branchId}
                 />
                 <Input
-                  name={FormProperties.UserName}
+                  name={UserProperties.UserName}
                   label="Username"
                   onChange={handleOnChange}
                   value={formData.userName}
                 />
                 <Input
-                  name={FormProperties.Password}
+                  name={UserProperties.Password}
                   label="Password"
                   onChange={handleOnChange}
                   value={formData.password}
@@ -92,7 +101,7 @@ function LandingPage() {
           </div>
         </div>
       </section>
-    </div>
+    </main>
   )
 }
 
