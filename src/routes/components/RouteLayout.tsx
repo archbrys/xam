@@ -15,7 +15,7 @@ function RouteLayout() {
           </RequireAuth>
         }
       />
-      <Route path="/login" element={<Login />} />
+      <Route path="/login" element={<Login dataTestId="login-page" />} />
       <Route path="/*" element={<div>No Page Found</div>} />
     </Routes>
   )

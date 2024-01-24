@@ -11,8 +11,9 @@ import { UserProperties } from '../../User/constant'
 import FormInput from '../../../common/Input/components/FormInput'
 import { IFormData } from '../interface'
 import Alert from '../../../common/Alert'
+import sanitizeFormData from '../../../utils/sanitizeFormData'
 
-function LoginForm() {
+function LoginForm({ dataTestId }: { dataTestId: string }) {
   const navigate = useNavigate()
   const location = useLocation()
   const auth = useAuth()
@@ -36,8 +37,9 @@ function LoginForm() {
   }
 
   const handleOnSubmit = async (values: IFormData) => {
+    const data = sanitizeFormData(values)
     setCredentials(true)
-    authenticateUser(values, (user) => {
+    authenticateUser(data, (user) => {
       if (!user) {
         setCredentials(true)
       } else {
@@ -64,7 +66,11 @@ function LoginForm() {
         isSubmitting,
         /* and other goodies */
       }) => (
-        <form className="space-y-4 md:space-y-6" onSubmit={handleSubmit}>
+        <form
+          className="space-y-4 md:space-y-6"
+          onSubmit={handleSubmit}
+          data-testid={dataTestId}
+        >
           {credentialError && <Alert>Incorrect username or password!</Alert>}
           <FormInput
             name={UserProperties.BranchId}

@@ -1,76 +1,141 @@
 import React from 'react'
-import Input from '../../../common/Input'
-import { INITIAL_USER_DATA, UserProperties } from '../constant'
+import { Formik } from 'formik'
+
+import { INITIAL_USER_DATA, UserProperties, userSchema } from '../constant'
 import Button from '../../../common/Button'
 import { addUser } from '../../../features/user/userSlice'
 import { useAppDispatch } from '../../../store/hooks'
-import { useForm } from '../../../utils/hooks/useForm'
 import Card from '../../../common/Card'
+import FormInput from '../../../common/Input/components/FormInput'
+import { IUserData } from '../interface'
 
 function AddUser() {
-  const { formData, handleOnChange, reset } = useForm(INITIAL_USER_DATA)
   const dispatch = useAppDispatch()
 
-  const handleOnSubmit = (event: React.FormEvent<HTMLFormElement>) => {
-    event?.preventDefault()
-    dispatch(addUser(formData))
+  const handleOnSubmit = (
+    values: IUserData,
+    { resetForm }: { resetForm: any }
+  ) => {
+    resetForm()
+    dispatch(addUser(values))
   }
 
   return (
     <section className="bg-gray-5">
       <Card>
-        <form className="space-y-4 md:space-y-6" onSubmit={handleOnSubmit}>
-          <Input
-            name={UserProperties.BranchId}
-            placeholder="Branch Id"
-            onChange={handleOnChange}
-            value={formData.branchId}
-          />
-          <Input
-            name={UserProperties.UserName}
-            placeholder="Username"
-            onChange={handleOnChange}
-            value={formData.userName}
-          />
-          <Input
-            name={UserProperties.FirstName}
-            placeholder="First Name"
-            onChange={handleOnChange}
-            value={formData.firstName}
-          />
-          <Input
-            name={UserProperties.MiddleName}
-            placeholder="Middle Name"
-            onChange={handleOnChange}
-            value={formData.middleName}
-          />
-          <Input
-            name={UserProperties.LastName}
-            placeholder="Last Name"
-            onChange={handleOnChange}
-            value={formData.lastName}
-          />
-          <Input
-            name={UserProperties.Position}
-            placeholder="Position"
-            onChange={handleOnChange}
-            value={formData.position}
-          />
-          <Input
-            name={UserProperties.Password}
-            placeholder="Password"
-            onChange={handleOnChange}
-            value={formData.password}
-          />
-          <div className="flex flex-row-reverse">
-            <Button type="submit" size="md">
-              Add
-            </Button>
-            <Button type="button" size="md" buttonStyle="light" onClick={reset}>
-              Reset
-            </Button>
-          </div>
-        </form>
+        <Formik
+          initialValues={INITIAL_USER_DATA}
+          validate={(values) =>
+            userSchema
+              .validate(values, { abortEarly: false })
+              .then(() => {})
+              .catch((err) =>
+                err.inner.reduce((obj: any, e: any) => {
+                  // eslint-disable-next-line no-param-reassign
+                  if (!(e.path in obj)) obj[e.path] = []
+                  // eslint-disable-next-line no-param-reassign
+                  obj[e.path] = obj[e.path].concat(e.errors)
+                  return obj
+                }, {})
+              )
+          }
+          onSubmit={handleOnSubmit}
+        >
+          {({
+            values,
+            errors,
+            touched,
+            handleChange,
+            handleSubmit,
+            isSubmitting,
+            resetForm,
+          }) => (
+            <form className="space-y-4 md:space-y-6" onSubmit={handleSubmit}>
+              <FormInput
+                name={UserProperties.BranchId}
+                placeholder="Branch Id"
+                onChange={handleChange}
+                value={values.branchId}
+                error={
+                  errors.branchId && touched.branchId ? errors.branchId : null
+                }
+              />
+              <FormInput
+                name={UserProperties.UserName}
+                placeholder="Username"
+                onChange={handleChange}
+                value={values.userName}
+                error={
+                  errors.userName && touched.userName ? errors.userName : null
+                }
+              />
+              <FormInput
+                name={UserProperties.FirstName}
+                placeholder="First Name"
+                onChange={handleChange}
+                value={values.firstName}
+                error={
+                  errors.firstName && touched.firstName
+                    ? errors.firstName
+                    : null
+                }
+              />
+              <FormInput
+                name={UserProperties.MiddleName}
+                placeholder="Middle Name"
+                onChange={handleChange}
+                value={values.middleName}
+                error={
+                  errors.middleName && touched.middleName
+                    ? errors.middleName
+                    : null
+                }
+              />
+              <FormInput
+                name={UserProperties.LastName}
+                placeholder="Last Name"
+                onChange={handleChange}
+                value={values.lastName}
+                error={
+                  errors.lastName && touched.lastName ? errors.lastName : null
+                }
+              />
+              <FormInput
+                name={UserProperties.Position}
+                placeholder="Position"
+                onChange={handleChange}
+                value={values.position}
+                error={
+                  errors.position && touched.position ? errors.position : null
+                }
+              />
+              <FormInput
+                type="password"
+                name={UserProperties.Password}
+                placeholder="Password"
+                onChange={handleChange}
+                value={values.password}
+                error={
+                  errors.password && touched.password ? errors.password : null
+                }
+              />
+              <div className="flex flex-row-reverse">
+                <Button type="submit" size="md" disabled={isSubmitting}>
+                  Add
+                </Button>
+                <Button
+                  type="reset"
+                  size="md"
+                  buttonStyle="light"
+                  disabled={isSubmitting}
+                  onClick={() => resetForm()}
+                >
+                  Reset
+                </Button>
+              </div>
+            </form>
+          )}
+        </Formik>
       </Card>
     </section>
   )

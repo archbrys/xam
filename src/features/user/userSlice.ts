@@ -26,7 +26,11 @@ export const userSlice = createSlice({
       return {
         ...state,
         users: state.users.filter(
-          (user) => user.branchId !== userToRemove.branchId
+          (user) =>
+            !(
+              user.branchId === userToRemove.branchId &&
+              user.userName === userToRemove.userName
+            )
         ),
       }
     },
