@@ -44,7 +44,7 @@ export const userSchema = Yup.object({
     .typeError('Branch Id must be a number')
     .min(5, 'Must be at least 5 characters long')
     .required('Branch Id is required'),
-  userName: Yup.string().required('Usernanme is required'),
+  userName: Yup.string().required('Username is required'),
   firstName: Yup.string().required('First Name is required'),
   middleName: Yup.string().required('Middle Name is required'),
   lastName: Yup.string().required('Last Name is required'),

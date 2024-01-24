@@ -13,6 +13,6 @@ export const loginSchema = Yup.object({
     .typeError('Branch Id must be a number')
     .min(5, 'Must be at least 5 characters long')
     .required('Branch Id is required'),
-  userName: Yup.string().required('Usernanme is required'),
+  userName: Yup.string().required('Username is required'),
   password: Yup.string().required('Password is required'),
 })
