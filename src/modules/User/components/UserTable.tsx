@@ -1,5 +1,5 @@
 import React, { useMemo } from 'react'
-import Table from '../../../common/Table/components/Table'
+import Table from '../../../common/Table'
 import { ITableData } from '../../../common/Table/interface'
 import { useAppDispatch, useAppSelector } from '../../../store/hooks'
 import { removeUser, selectUsers } from '../../../features/user/userSlice'

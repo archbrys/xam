@@ -1,6 +1,6 @@
 import React from 'react'
 import Header from './Header'
-import AddUser from './AddUser'
+import UserForm from './UserForm'
 import UserTable from './UserTable'
 
 function LandingPage() {
@@ -8,7 +8,7 @@ function LandingPage() {
     <main className="flex flex-col">
       <Header />
       <div className="flex flex-row flex-wrap px-5 gap-6">
-        <AddUser />
+        <UserForm />
         <UserTable />
       </div>
     </main>
